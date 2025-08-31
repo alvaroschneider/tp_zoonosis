@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Usuario</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h2>Registro de Usuario</h2>
+    <form id="registroForm">
+      <input type="text" name="username" placeholder="DNI" required />
+      <input type="password" name="password" placeholder="Contraseña" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="text" name="nombre" placeholder="Nombre" required />
+      <input type="text" name="apellido" placeholder="Apellido" required />
+      <input type="text" name="telefono" placeholder="Teléfono" required />
+      <label>Rol:</label>
+      <select name="roles" multiple required>
+        <option value="usuario">Usuario</option>
+        <option value="veterinario">Veterinario</option>
+      </select>
+      <button type="submit">Registrar</button>
+    </form>
+    <div id="mensaje"></div>
+  </main>
+  <script>
+    document.getElementById('registroForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        username: form.username.value,
+        password: form.password.value,
+        email: form.email.value,
+        nombre: form.nombre.value,
+        apellido: form.apellido.value,
+        telefono: form.telefono.value,
+        roles: Array.from(form.roles.selectedOptions).map(opt => opt.value)
+      };
+      const resp = await fetch('http://localhost:5000/usuarios/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await resp.json();
+      const mensajeDiv = document.getElementById('mensaje');
+      if (resp.ok) {
+        mensajeDiv.textContent = result.message || 'Registro exitoso';
+        mensajeDiv.style.color = 'green';
+        form.reset();
+      } else {
+        mensajeDiv.textContent = result.error || result.message || 'Error en el registro';
+        mensajeDiv.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>

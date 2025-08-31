@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test API Flask + MySQL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        th {
+            background: #f4f4f4;
+        }
+
+        input {
+            padding: 5px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Clientes</h1>
+
+    <!-- Formulario para agregar cliente -->
+    <h3>Agregar Cliente</h3>
+    <form id="clienteForm">
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <!-- Tabla para mostrar clientes -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="clientesTable"></tbody>
+    </table>
+
+    <script>
+        const API_URL = "http://127.0.0.1:5000/clientes";
+
+        // Cargar clientes al iniciar
+        async function cargarClientes() {
+            const res = await fetch(API_URL);
+            const clientes = await res.json();
+            const table = document.getElementById("clientesTable");
+            table.innerHTML = "";
+
+            clientes.forEach(c => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+          <td>${c.id}</td>
+          <td>${c.nombre}</td>
+          <td>${c.email}</td>
+          <td>
+            <button onclick="editarCliente(${c.id}, '${c.nombre}', '${c.email}')">Editar</button>
+            <button onclick="eliminarCliente(${c.id})">Eliminar</button>
+          </td>
+        `;
+                table.appendChild(row);
+            });
+        }
+
+        // Agregar cliente
+        document.getElementById("clienteForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById("nombre").value;
+            const email = document.getElementById("email").value;
+
+            await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nombre, email })
+            });
+
+            e.target.reset();
+            cargarClientes();
+        });
+
+        // Editar cliente
+        async function editarCliente(id, nombre, email) {
+            const nuevoNombre = prompt("Nuevo nombre:", nombre);
+            const nuevoEmail = prompt("Nuevo email:", email);
+            if (nuevoNombre && nuevoEmail) {
+                await fetch(`${API_URL}/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nombre: nuevoNombre, email: nuevoEmail })
+                });
+                cargarClientes();
+            }
+        }
+
+        // Eliminar cliente
+        async function eliminarCliente(id) {
+            if (confirm("¿Seguro que quieres eliminar este cliente?")) {
+                await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+                cargarClientes();
+            }
+        }
+
+        // Inicializar
+        cargarClientes();
+    </script>
+</body>
+
+</html>
