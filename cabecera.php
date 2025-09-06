@@ -6,6 +6,8 @@
   <meta name="description" content="Veterinaria integral para el cuidado de tus mascotas. Servicios de consultas, vacunas, cirugías.">
   <meta name="keywords" content="veterinaria, mascotas, perros, gatos, salud animal, vacunas, consultas, cirugias">
   <title>ZOONOSIS ITUZAINGÓ - Cuidando para tus mascotas</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" href="/imagenes/logo_4.png" type="image/png">
   <link rel="stylesheet" href="style.css">
@@ -44,7 +46,7 @@
       <nav>
         <ul>
           <li class="nav-item">
-            <a class="nav-link active" href="index.html">Inicio</a>
+            <a class="nav-link active" href="index.php">Inicio</a>
           </li>
           <!-- Solo el botón Servicios con el menú desplegable -->
           <li class="nav-item dropdown">
@@ -59,7 +61,7 @@
             </ul>
           </li>
           <li class="nav-item"><a class="nav-link" href="#formularios">Tus Turnos</a></li>
-          <li class="nav-item"><a class="nav-link" href="mascotas.html">Tus mascotas</a></li>
+          <li class="nav-item"><a class="nav-link" href="mascotas.php">Tus mascotas</a></li>
           <button id="accountBtn" class="btn btn-outline-dark">Mi Cuenta</button>
         </ul>
       </nav>
@@ -133,7 +135,7 @@
         e.preventDefault();
         const username = document.getElementById('dni').value;
         const password = document.getElementById('password').value;
-        const resp = await fetch('http://localhost:5000/usuarios/login', {
+        const resp = await fetch('http://136.248.93.81/api/usuarios/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, password })

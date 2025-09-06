@@ -1,31 +1,27 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Tus Mascotas</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+<?php include 'cabecera.php'; ?>
 
+<main>
   <div class="container mt-4">
-    <h1 class="mb-4">Tus Mascotas</h1>
+    <h1 class="mb-4 text-primary text-center">Tus Mascotas</h1>
 
-    <table class="table table-striped" id="tablaMascotas">
-      <thead class="table-dark">
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Tipo</th>
-          <th>Edad</th>
-          <th>Dueño (cliente_id)</th>
-          <th>Creado</th>
-          <th>Actualizado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Aquí se insertan las filas con JS -->
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover align-middle shadow" id="tablaMascotas">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Edad</th>
+            <th scope="col">Dueño (cliente_id)</th>
+            <th scope="col">Creado</th>
+            <th scope="col">Actualizado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se insertan las filas con JS -->
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script>
@@ -57,5 +53,6 @@
         .catch(error => console.error("Error al cargar mascotas:", error));
     });
   </script>
-</body>
-</html>
+</main>
+
+<?php include 'footer.php'; ?>
